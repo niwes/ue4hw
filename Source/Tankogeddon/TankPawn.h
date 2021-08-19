@@ -10,6 +10,9 @@
 class UStaticMeshComponent;
 class USpringArmComponent;
 class UCameraComponent;
+class ATankPlayerController;
+class UArrowComponent;
+class ACannon;
 
 
 UCLASS()
@@ -25,7 +28,7 @@ public:
     void MoveForward(float AxisValue);
 
     UFUNCTION()
-    void MoveRight(float AxisValue);
+    void RotateRight(float AxisValue);
 
 protected:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
@@ -40,20 +43,44 @@ protected:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
     UCameraComponent* Camera;
 
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+    UArrowComponent* CannonSetupPoint;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
+    TSubclassOf<ACannon> CannonClass;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
     float MoveSpeed = 100.f;
     
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
     float RotationSpeed = 100.f;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
+    float RotationSmootheness = 0.1f;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
+    float TurretRotationSmootheness = 0.5f;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+    void SetupCannon();
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+    UFUNCTION()
+    void Fire();
+
 private:
-    float TargetForwardAxisValue;
-    float TargetRightAxisValue;
+    float TargetForwardAxisValue = 0.f;
+    float TargetRightAxisValue = 0.f;
+    float CurrentRightAxisValue = 0.f;
+
+    UPROPERTY()
+    ATankPlayerController* TankController;
+
+    UPROPERTY()
+    ACannon* Cannon;
 };
