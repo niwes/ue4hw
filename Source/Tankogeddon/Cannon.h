@@ -34,6 +34,9 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
     ECannonType Type = ECannonType::FireProjectile;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
+    int32 Ammo = 3;
+
     FTimerHandle ReloadTimerHandle;
 
     bool bReadyToFire = false;
@@ -42,7 +45,7 @@ public:
     ACannon();
 
     void Fire();
-
+    void SpecialFire();
     bool IsReadyToFire();
 
 protected:
